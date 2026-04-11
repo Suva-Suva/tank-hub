@@ -48,6 +48,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem 'rspec_junit_formatter', '~> 0.6', require: false
 end
 
 gem "standard", "~> 1.40", require: false
