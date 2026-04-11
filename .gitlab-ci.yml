@@ -14,31 +14,47 @@ variables:
   BUNDLE_PATH: vendor/bundle
   BUNDLE_JOBS: 4
   BUNDLE_RETRY: 3
-  CC_TEST_REPORTER_ID: ${CC_TEST_REPORTER_ID:-}
+  # Отключаем интерактивные подсказки bundler
+  BUNDLE_FORCE_RUBY_PLATFORM: "1"
 
-# Кэширование зависимостей
+# Кэширование: разделяем bundler и node_modules
 cache:
-  key: "ruby-${RUBY_VERSION}-bundler-${CI_COMMIT_REF_SLUG}"
+  key: "ruby-${RUBY_VERSION}-${CI_COMMIT_REF_SLUG}"
   paths:
     - vendor/bundle
     - .bundle/
     - node_modules/
+  policy: pull-push
 
-# Образ с нужными версиями
-.default_image: &default_image
-  image: ruby:${RUBY_VERSION}-alpine
+# === Базовый шаблон для всех джоб ===
+.default: &default
+  image: ruby:${RUBY_VERSION}-slim
   services:
     - postgres:15-alpine
-
-before_script:
-  - apk add --no-cache build-base postgresql-dev git nodejs npm yarn
-  - ruby -v
-  - bundle config set --local path 'vendor/bundle'
-  - bundle install --jobs 4 --retry 3
+  variables:
+    DATABASE_URL: postgresql://runner:@postgres:5432/${POSTGRES_DB}
+  before_script:
+    # Обновляем пакеты и ставим только необходимое для компиляции гемов
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends
+        build-essential
+        libpq-dev
+        git
+        curl
+        gnupg2
+    - apt-get clean && rm -rf /var/lib/apt/lists/*
+    
+    # Настраиваем bundler
+    - bundle config set --local path 'vendor/bundle'
+    - bundle config set --local jobs 4
+    - bundle config set --local retry 3
+    
+    # Устанавливаем зависимости
+    - bundle install
 
 # === LINT ===
 lint:standard:
-  <<: *default_image
+  <<: *default
   stage: lint
   script:
     - bundle exec standardrb --format progress --format simple --out rubocop-report.txt
@@ -51,14 +67,27 @@ lint:standard:
 
 # === TEST ===
 test:rspec:
-  <<: *default_image
+  <<: *default
   stage: test
   variables:
+    RAILS_ENV: test
     DATABASE_URL: postgresql://runner:@postgres:5432/game_portal_test
   before_script:
-    - apk add --no-cache build-base postgresql-dev git nodejs npm yarn
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends
+        build-essential
+        libpq-dev
+        git
+        curl
+        gnupg2
+    - apt-get clean && rm -rf /var/lib/apt/lists/*
+    
     - bundle config set --local path 'vendor/bundle'
-    - bundle install --jobs 4 --retry 3
+    - bundle config set --local jobs 4
+    - bundle config set --local retry 3
+    - bundle install
+    
+    # Подготовка тестовой БД
     - bin/rails db:create db:migrate RAILS_ENV=test
   script:
     - bundle exec rspec 
@@ -79,7 +108,7 @@ test:rspec:
 
 # === DEPLOY (placeholder) ===
 deploy:staging:
-  <<: *default_image
+  <<: *default
   stage: deploy
   environment:
     name: staging
