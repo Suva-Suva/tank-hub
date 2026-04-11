@@ -1,0 +1,18 @@
+# .standard.yml
+plugins:
+  - standard-rails
+
+ignore:
+  - 'db/schema.rb'
+  - 'bin/*'
+  - 'node_modules/**/*'
+  - 'vendor/**/*'
+
+# Rails-specific overrides
+rules:
+  Rails/ApplicationRecord:
+    Enabled: true
+  Rails/HasManyOrHasOneDependent:
+    Enabled: true
+  Rails/InverseOf:
+    Enabled: false # опционально для сложных связей
