@@ -39,6 +39,7 @@ cache:
     - apt-get install -y -qq --no-install-recommends
         build-essential
         libpq-dev
+        libyaml-dev
         git
         curl
         gnupg2
@@ -57,10 +58,10 @@ lint:standard:
   <<: *default
   stage: lint
   script:
-    - bundle exec standardrb --format progress --format simple --out rubocop-report.txt
+    - bundle exec standardrb --format progress --format simple --out standardrb-report.txt
   artifacts:
     paths:
-      - rubocop-report.txt
+      - standardrb-report.txt
     when: always
     expire_in: 1 week
   allow_failure: false
@@ -77,6 +78,7 @@ test:rspec:
     - apt-get install -y -qq --no-install-recommends
         build-essential
         libpq-dev
+        libyaml-dev
         git
         curl
         gnupg2
