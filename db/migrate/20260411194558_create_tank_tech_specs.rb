@@ -1,6 +1,6 @@
 class CreateTankTechSpecs < ActiveRecord::Migration[8.1]
   def change
-    enable_extension 'pg_trgm' unless extension_enabled?('pg_trgm')
+    enable_extension "pg_trgm" unless extension_enabled?("pg_trgm")
 
     create_table :tank_tech_specs do |t|
       t.references :game, null: false, foreign_key: true
@@ -16,8 +16,8 @@ class CreateTankTechSpecs < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :tank_tech_specs, [:game_id, :name], unique: true, name: 'idx_tanks_game_name_unique'
-    add_index :tank_tech_specs, [:tier, :tank_class], name: 'idx_tanks_tier_class'
-    add_index :tank_tech_specs, :name, using: :gin, opclass: :gin_trgm_ops, name: 'idx_tanks_name_trgm'
+    add_index :tank_tech_specs, [:game_id, :name], unique: true, name: "idx_tanks_game_name_unique"
+    add_index :tank_tech_specs, [:tier, :tank_class], name: "idx_tanks_tier_class"
+    add_index :tank_tech_specs, :name, using: :gin, opclass: :gin_trgm_ops, name: "idx_tanks_name_trgm"
   end
 end

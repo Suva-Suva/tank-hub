@@ -6,15 +6,15 @@ class Game < ApplicationRecord
 
   validates :title,
     presence: true,
-    uniqueness: { case_sensitive: false },
-    length: { maximum: 100 }
+    uniqueness: {case_sensitive: false},
+    length: {maximum: 100}
 
   validates :slug,
     presence: true,
     uniqueness: true,
     format: {
       with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/,
-      message: 'Только латиница, цифры и дефис'
+      message: "Только латиница, цифры и дефис"
     }
 
   before_validation :generate_slug, if: :slug_blank?

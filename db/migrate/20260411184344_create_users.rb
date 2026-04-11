@@ -12,6 +12,6 @@ class CreateUsers < ActiveRecord::Migration[8.1]
 
     add_index :users, :email, unique: true
     add_index :users, :role
-    add_index :users, [:active, :created_at], name: 'idx_users_active_created'
+    add_index :users, [:active, :created_at], name: "idx_users_active_created"
   end
 end

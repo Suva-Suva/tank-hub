@@ -5,7 +5,7 @@ FactoryBot.define do
     association :author, factory: :user
     sequence(:title) { |n| "Статья ##{n}" }
     sequence(:slug) { |n| "article-#{n}" }
-    body { 'Контент статьи...' }
+    body { "Контент статьи..." }
     status { :draft }
     meta { {} }
 

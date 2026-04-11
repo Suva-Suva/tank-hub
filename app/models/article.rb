@@ -3,22 +3,22 @@ class Article < ApplicationRecord
   include PgSearch::Model
 
   belongs_to :game
-  belongs_to :author, class_name: 'User', foreign_key: :author_id, optional: true
+  belongs_to :author, class_name: "User", optional: true
   has_many :article_categories, dependent: :destroy
   has_many :categories, through: :article_categories
   has_many :ratings, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
 
-  enum :status, { draft: 0, published: 1, archived: 2 }, prefix: true, validate: true
+  enum :status, {draft: 0, published: 1, archived: 2}, prefix: true, validate: true
 
-  validates :title, presence: true, length: { maximum: 255 }
+  validates :title, presence: true, length: {maximum: 255}
   validates :slug,
     presence: true,
-    uniqueness: { scope: :game_id },
-    format: { with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/ }
-  
-  validates :body, presence: true, if: -> { status == 'published' }
-  validates :published_at, presence: true, if: -> { status == 'published' }
+    uniqueness: {scope: :game_id},
+    format: {with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/}
+
+  validates :body, presence: true, if: -> { status == "published" }
+  validates :published_at, presence: true, if: -> { status == "published" }
 
   before_validation :generate_slug, if: :slug_blank?
   before_save :set_published_at, if: :will_save_change_to_status?
@@ -28,12 +28,12 @@ class Article < ApplicationRecord
     using: {
       tsearch: {
         prefix: true,
-        dictionary: 'russian',
-        tsvector_column: 'search_vector'
+        dictionary: "russian",
+        tsvector_column: "search_vector"
       }
     }
 
-  scope :published, -> { where(status: :published).where('published_at <= ?', Time.current) }
+  scope :published, -> { where(status: :published).where("published_at <= ?", Time.current) }
   scope :recent, ->(count = 5) { published.order(published_at: :desc).limit(count) }
   scope :by_game, ->(game) { where(game: game) }
 
@@ -59,6 +59,6 @@ class Article < ApplicationRecord
   end
 
   def set_published_at
-    self.published_at = Time.current if status == 'published' && published_at.nil?
+    self.published_at = Time.current if status == "published" && published_at.nil?
   end
 end

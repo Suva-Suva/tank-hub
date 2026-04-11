@@ -8,6 +8,6 @@ class CreateArticleCategories < ActiveRecord::Migration[8.1]
     end
 
     add_index :article_categories, [:article_id, :category_id],
-      unique: true, name: 'idx_article_cat_unique'
+      unique: true, name: "idx_article_cat_unique"
   end
 end

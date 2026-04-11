@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_202657) do
     t.integer "rgt", null: false
     t.string "slug", limit: 100, null: false
     t.datetime "updated_at", null: false
+    t.index ["categorizable_type", "categorizable_id", "name"], name: "idx_cat_name_unique", unique: true
     t.index ["categorizable_type", "categorizable_id", "slug"], name: "idx_cat_slug_unique", unique: true
     t.index ["lft", "rgt"], name: "idx_cat_nested_set"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
@@ -70,7 +71,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_202657) do
     t.string "title", limit: 100, null: false
     t.datetime "updated_at", null: false
     t.index ["is_active", "title"], name: "idx_games_active_title"
-    t.index ["slug"], name: "index_games_on_slug", unique: true
+    t.index ["slug"], name: "idx_games_slug_unique", unique: true
+    t.index ["title"], name: "idx_games_title_unique", unique: true
   end
 
   create_table "ratings", force: :cascade do |t|

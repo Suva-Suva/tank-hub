@@ -19,13 +19,13 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # TODO: В проде заменить на домен (убрать localhost)
-    origins ENV.fetch('FRONTEND_URL', 'http://localhost:5173')
+    origins ENV.fetch("FRONTEND_URL", "http://localhost:5173")
 
-    resource '/api/v1/*',
+    resource "/api/v1/*",
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
       credentials: true,
-      expose: ['Authorization', 'Content-Type', 'X-Total-Pages', 'X-Current-Page'],
+      expose: ["Authorization", "Content-Type", "X-Total-Pages", "X-Current-Page"],
       max_age: 600
   end
 end
