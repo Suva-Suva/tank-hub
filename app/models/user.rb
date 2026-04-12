@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   validates :email,
     presence: true,
-    uniqueness: {case_sensitive: false},
+    uniqueness: true,
     format: {with: URI::MailTo::EMAIL_REGEXP, message: "Некорректный формат"}
 
   validates :role, inclusion: {in: roles.keys}
@@ -34,6 +34,6 @@ class User < ApplicationRecord
   private
 
   def downcase_email
-    self.email = email.downcase
+    self.email = email.downcase if email.present?
   end
 end
