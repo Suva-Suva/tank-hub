@@ -1,5 +1,5 @@
 # config/initializers/pagy.rb
-require 'pagy'
+require "pagy"
 
 # Включить мета-информацию в заголовки
 # require 'pagy/extras/headers'

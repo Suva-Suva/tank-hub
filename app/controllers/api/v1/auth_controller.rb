@@ -2,36 +2,33 @@
 module Api
   module V1
     class AuthController < BaseController
-
       def register
         user = User.new(user_params)
         if user.save
           tokens = ::Auth::TokenService.new(user).generate_tokens
-          render json: { user: { id: user.id, email: user.email }, **tokens }, status: :created
+          render json: {user: {id: user.id, email: user.email}, **tokens}, status: :created
         else
-          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+          render json: {errors: user.errors.full_messages}, status: :unprocessable_content
         end
       end
 
       def login
         user = User.find_by(email: params[:email]&.downcase)
-        
+
         if user&.authenticate(params[:password])
           tokens = ::Auth::TokenService.new(user).generate_tokens
-          render json: { user: { id: user.id, email: user.email }, **tokens }
+          render json: {user: {id: user.id, email: user.email}, **tokens}
         else
-          render json: { error: 'Invalid credentials' }, status: :unauthorized
+          render json: {error: "Invalid credentials"}, status: :unauthorized
         end
       end
 
       def refresh
-        begin
-          user = ::Auth::TokenService.decode(params[:refresh_token], type: :refresh)
-          tokens = ::Auth::TokenService.new(user).generate_tokens
-          render json: tokens
-        rescue ::Auth::TokenService::InvalidToken, Auth::TokenService::ExpiredToken
-          render json: { error: 'Invalid refresh token' }, status: :unauthorized
-        end
+        user = ::Auth::TokenService.decode(params[:refresh_token], type: :refresh)
+        tokens = ::Auth::TokenService.new(user).generate_tokens
+        render json: tokens
+      rescue ::Auth::TokenService::InvalidToken, Auth::TokenService::ExpiredToken
+        render json: {error: "Invalid refresh token"}, status: :unauthorized
       end
 
       def logout

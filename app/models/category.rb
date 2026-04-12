@@ -19,7 +19,7 @@ class Category < ApplicationRecord
     uniqueness: {scope: %i[categorizable_type categorizable_id]},
     format: {with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/}
 
-  validates :lft, :rgt, :depth, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :depth, numericality: {only_integer: true, greater_than_or_equal_to: 0}
 
   before_validation :generate_slug, if: :slug_blank?
   before_create :set_nested_set_boundaries
