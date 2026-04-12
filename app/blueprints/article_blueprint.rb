@@ -11,4 +11,16 @@ class ArticleBlueprint < BaseBlueprint
     field :body
     association :game, blueprint: GameBlueprint
   end
+
+  view :admin do
+    field :body
+    field :status
+    field :meta
+    field :game_id
+    field :author_id
+    field :category_ids do |article, _| article.category_ids end
+    association :game, blueprint: GameBlueprint
+    association :author, blueprint: AuthorBlueprint
+  end
+
 end

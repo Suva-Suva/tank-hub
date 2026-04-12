@@ -44,12 +44,13 @@ Rails.application.routes.draw do
       end
 
       # Admin (Role-based access)
-      namespace :admin, constraints: ->(req) { req.env["HTTP_X_USER_ROLE"] == "admin" } do
-        resources :users, only: %i[index show update destroy]
-        resources :games, except: %i[index show]
-        resources :articles, except: [:index]
-        resources :tank_tech_specs, except: [:index]
-        resources :categories, except: [:index]
+      namespace :admin, module: :admin do
+        resources :articles, except: %i[new edit] do
+          member do
+            post :publish
+            post :unpublish
+          end
+        end
       end
     end
   end
