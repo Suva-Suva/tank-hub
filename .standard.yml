@@ -8,6 +8,8 @@ ignore:
   - 'node_modules/**/*'
   - 'vendor/**/*'
 
+TargetRubyVersion: 3.4
+
 # Rails-specific overrides
 rules:
   Rails/ApplicationRecord:

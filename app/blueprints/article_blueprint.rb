@@ -18,9 +18,8 @@ class ArticleBlueprint < BaseBlueprint
     field :meta
     field :game_id
     field :author_id
-    field :category_ids do |article, _| article.category_ids end
+    field(:category_ids) { |article, _| article.category_ids }
     association :game, blueprint: GameBlueprint
     association :author, blueprint: AuthorBlueprint
   end
-
 end

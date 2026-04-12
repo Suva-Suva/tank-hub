@@ -6,15 +6,15 @@ module Api
         include Api::V1::Authenticable
 
         # Авторы и модераторы могут изменять свои статьи. Админ - все.
-        before_action { require_role('admin', 'moderator', 'member') }
+        before_action { require_role("admin", "moderator", "member") }
         before_action :set_article, only: %i[show update destroy publish unpublish]
 
         def index
           scope = Article.includes(:author, :game).order(created_at: :desc)
-          
+
           # Неадмины видят только свои статьи
           scope = scope.where(author: current_user) unless current_user.role_admin?
-          
+
           # Фильтры
           scope = scope.where(status: params[:status]) if params[:status].present?
           scope = scope.where(game_id: params[:game_id]) if params[:game_id].present?
@@ -31,7 +31,7 @@ module Api
           if @article.save
             render json: ArticleBlueprint.render(@article, view: :admin), status: :created
           else
-            render json: { errors: @article.errors }, status: :unprocessable_entity
+            render json: {errors: @article.errors}, status: :unprocessable_content
           end
         end
 
@@ -39,7 +39,7 @@ module Api
           if @article.update(article_params)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: { errors: @article.errors }, status: :unprocessable_entity
+            render json: {errors: @article.errors}, status: :unprocessable_content
           end
         end
 
@@ -52,7 +52,7 @@ module Api
           if @article.update(status: :published, published_at: Time.current)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: { errors: @article.errors }, status: :unprocessable_entity
+            render json: {errors: @article.errors}, status: :unprocessable_content
           end
         end
 
@@ -60,7 +60,7 @@ module Api
           if @article.update(status: :draft)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: { errors: @article.errors }, status: :unprocessable_entity
+            render json: {errors: @article.errors}, status: :unprocessable_content
           end
         end
 

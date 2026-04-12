@@ -36,9 +36,9 @@ module Api
         is_authorized = current_user && roles.map(&:to_s).include?(current_user.role)
 
         unless is_authorized
-          render json: { error: 'Insufficient permissions' }, status: :forbidden
+          render json: {error: "Insufficient permissions"}, status: :forbidden
           # Останавливает выполнение контроллера после рендера
-          throw :abort 
+          throw :abort
         end
       end
 

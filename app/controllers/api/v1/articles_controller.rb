@@ -13,7 +13,7 @@ module Api
 
       def show
         article = Article.published
-          .includes(:author, :game``)
+          .includes(:author, :game)
           .find_by!(slug: params[:slug], game: game_scope)
 
         render json: ArticleBlueprint.render(article, view: :detailed)
