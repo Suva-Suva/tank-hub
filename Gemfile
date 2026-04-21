@@ -61,7 +61,7 @@ gem "pagy", "~> 43.5"
 
 gem "pg_search", "~> 2.3", require: "pg_search"
 
-gem "blueprinter", "~> 1.2"
+gem "blueprinter", "~> 1.3"
 
 gem "jwt", "~> 3.1"
 
