@@ -13,6 +13,7 @@ module Api
         # Фильтры из query-параметров
         scope = scope.where(tank_class: params[:class]) if params[:class].present?
         scope = scope.where(tier: params[:tier]) if params[:tier].present?
+        scope = scope.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
 
         scope = scope.order(tier: :asc, name: :asc)
 
@@ -22,6 +23,14 @@ module Api
       def show
         spec = TankTechSpec.includes(:game).find(params[:id])
         render json: TankTechSpecBlueprint.render(spec, view: :detailed)
+      end
+
+      def compare
+        # Ожидаем параметры типа ?ids=1,3
+        ids = params[:ids].to_s.split(',')
+        specs = TankTechSpec.where(id: ids)
+
+        render json: TankTechSpecBlueprint.render(specs)
       end
     end
   end
