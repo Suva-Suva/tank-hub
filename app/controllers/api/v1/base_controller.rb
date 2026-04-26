@@ -9,7 +9,7 @@ module Api
       private
 
       def not_found
-        render json: {error: "Resource not found"}, status: :not_found
+        render json: { error: "Resource not found" }, status: :not_found
       end
 
       # Метод для рендера с пагинацией (использует Pagy)

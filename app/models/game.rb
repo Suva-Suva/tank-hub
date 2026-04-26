@@ -6,8 +6,8 @@ class Game < ApplicationRecord
 
   validates :title,
     presence: true,
-    uniqueness: {case_sensitive: false},
-    length: {maximum: 100}
+    uniqueness: { case_sensitive: false },
+    length: { maximum: 100 }
 
   validates :slug,
     presence: true,

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # Health check для балансировщиков и мониторинга
   get "/up", to: "health#show", as: :health
 
-  namespace :api, defaults: {format: :json} do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       # Authentication
       post "/auth/register", to: "auth#register", as: :auth_register
@@ -33,11 +33,11 @@ Rails.application.routes.draw do
 
       # Taxonomy
       resources :categories, only: %i[index show], param: :slug do
-        resources :articles, only: [:index], module: :categories
+        resources :articles, only: [ :index ], module: :categories
       end
 
       # User Resources (JWT Protected)
-      namespace :user, constraints: {format: :json} do
+      namespace :user, constraints: { format: :json } do
         resource :profile, only: %i[show update], controller: "profile"
         resources :bookmarks, only: %i[index create destroy]
         resources :ratings, only: %i[create update destroy]

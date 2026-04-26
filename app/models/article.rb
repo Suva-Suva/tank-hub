@@ -9,13 +9,13 @@ class Article < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
 
-  enum :status, {draft: 0, published: 1, archived: 2}, prefix: true, validate: true
+  enum :status, { draft: 0, published: 1, archived: 2 }, prefix: true, validate: true
 
-  validates :title, presence: true, length: {maximum: 255}
+  validates :title, presence: true, length: { maximum: 255 }
   validates :slug,
     presence: true,
-    uniqueness: {scope: :game_id},
-    format: {with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/}
+    uniqueness: { scope: :game_id },
+    format: { with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/ }
 
   validates :body, presence: true, if: -> { status == "published" }
   validates :published_at, presence: true, if: -> { status == "published" }

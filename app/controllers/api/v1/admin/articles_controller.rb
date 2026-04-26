@@ -31,7 +31,7 @@ module Api
           if @article.save
             render json: ArticleBlueprint.render(@article, view: :admin), status: :created
           else
-            render json: {errors: @article.errors}, status: :unprocessable_content
+            render json: { errors: @article.errors }, status: :unprocessable_content
           end
         end
 
@@ -39,7 +39,7 @@ module Api
           if @article.update(article_params)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: {errors: @article.errors}, status: :unprocessable_content
+            render json: { errors: @article.errors }, status: :unprocessable_content
           end
         end
 
@@ -52,7 +52,7 @@ module Api
           if @article.update(status: :published, published_at: Time.current)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: {errors: @article.errors}, status: :unprocessable_content
+            render json: { errors: @article.errors }, status: :unprocessable_content
           end
         end
 
@@ -60,7 +60,7 @@ module Api
           if @article.update(status: :draft)
             render json: ArticleBlueprint.render(@article, view: :admin)
           else
-            render json: {errors: @article.errors}, status: :unprocessable_content
+            render json: { errors: @article.errors }, status: :unprocessable_content
           end
         end
 

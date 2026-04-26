@@ -8,12 +8,12 @@ class TankTechSpec < ApplicationRecord
 
   validates :name,
     presence: true,
-    uniqueness: {scope: :game_id},
-    length: {maximum: 100}
+    uniqueness: { scope: :game_id },
+    length: { maximum: 100 }
 
-  validates :tier, inclusion: {in: 1..11, message: "Должен быть от 1 до 11"}
-  validates :hp, :damage, numericality: {greater_than_or_equal_to: 0, only_integer: true}
-  validates :speed, numericality: {greater_than_or_equal_to: 0}
+  validates :tier, inclusion: { in: 1..11, message: "Должен быть от 1 до 11" }
+  validates :hp, :damage, numericality: { greater_than_or_equal_to: 0, only_integer: true }
+  validates :speed, numericality: { greater_than_or_equal_to: 0 }
 
   # Валидация структуры брони (JSONB)
   validate :armor_structure_valid, if: -> { armor.present? }

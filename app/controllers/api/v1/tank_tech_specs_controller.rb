@@ -7,7 +7,7 @@ module Api
 
         # Поддержка вложенных маршрутов: /games/:slug/tank_tech_specs
         if params[:game_slug].present?
-          scope = scope.joins(:game).where(games: {slug: params[:game_slug]})
+          scope = scope.joins(:game).where(games: { slug: params[:game_slug] })
         end
 
         # Фильтры из query-параметров
@@ -27,7 +27,7 @@ module Api
 
       def compare
         # Ожидаем параметры типа ?ids=1,3
-        ids = params[:ids].to_s.split(',')
+        ids = params[:ids].to_s.split(",")
         specs = TankTechSpec.where(id: ids)
 
         render json: TankTechSpecBlueprint.render(specs)

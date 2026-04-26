@@ -5,7 +5,7 @@ class CreateArticles < ActiveRecord::Migration[8.1]
 
     create_table :articles do |t|
       t.references :game, null: false, foreign_key: true
-      t.references :author, foreign_key: {to_table: :users}, null: true
+      t.references :author, foreign_key: { to_table: :users }, null: true
       t.string :title, null: false, limit: 255
       t.string :slug, null: false, limit: 255
       t.text :body, null: false
@@ -17,8 +17,8 @@ class CreateArticles < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :articles, [:game_id, :slug], unique: true, name: "idx_articles_game_slug_unique"
-    add_index :articles, [:status, :published_at], name: "idx_articles_status_published"
+    add_index :articles, [ :game_id, :slug ], unique: true, name: "idx_articles_game_slug_unique"
+    add_index :articles, [ :status, :published_at ], name: "idx_articles_status_published"
     add_index :articles, :search_vector, using: :gin
     add_index :articles, :title, using: :gin, opclass: :gin_trgm_ops, name: "idx_articles_title_trgm"
 

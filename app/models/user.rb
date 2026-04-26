@@ -2,7 +2,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  enum :role, {member: 0, moderator: 1, admin: 2}, prefix: true, validate: true
+  enum :role, { member: 0, moderator: 1, admin: 2 }, prefix: true, validate: true
 
   has_many :articles, foreign_key: :author_id, dependent: :nullify
   has_many :bookmarks, dependent: :destroy
@@ -12,9 +12,9 @@ class User < ApplicationRecord
   validates :email,
     presence: true,
     uniqueness: true,
-    format: {with: URI::MailTo::EMAIL_REGEXP, message: "Некорректный формат"}
+    format: { with: URI::MailTo::EMAIL_REGEXP, message: "Некорректный формат" }
 
-  validates :role, inclusion: {in: roles.keys}
+  validates :role, inclusion: { in: roles.keys }
 
   before_save :downcase_email
 

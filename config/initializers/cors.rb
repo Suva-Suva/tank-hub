@@ -16,7 +16,7 @@
 #   end
 # end
 
-#Rails.application.config.middleware.insert_before 0, Rack::Cors do
+# Rails.application.config.middleware.insert_before 0, Rack::Cors do
 #  allow do
 #    # TODO: В проде заменить на домен (убрать localhost)
 #    origins ENV.fetch("FRONTEND_URL", "http://localhost:5173")
@@ -28,7 +28,7 @@
 #      expose: ["Authorization", "Content-Type", "X-Total-Pages", "X-Current-Page"],
 #      max_age: 600
 #  end
-#end
+# end
 
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
@@ -38,6 +38,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
     resource "*",
              headers: :any,
-             methods: [:get, :post, :put, :patch, :delete, :options, :head]
+             methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
   end
 end

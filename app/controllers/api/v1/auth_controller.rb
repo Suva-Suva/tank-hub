@@ -6,9 +6,9 @@ module Api
         user = User.new(user_params)
         if user.save
           tokens = ::Auth::TokenService.new(user).generate_tokens
-          render json: {user: {id: user.id, email: user.email}, **tokens}, status: :created
+          render json: { user: { id: user.id, email: user.email }, **tokens }, status: :created
         else
-          render json: {errors: user.errors.full_messages}, status: :unprocessable_content
+          render json: { errors: user.errors.full_messages }, status: :unprocessable_content
         end
       end
 
@@ -17,9 +17,9 @@ module Api
 
         if user&.authenticate(params[:password])
           tokens = ::Auth::TokenService.new(user).generate_tokens
-          render json: {user: {id: user.id, email: user.email}, **tokens}
+          render json: { user: { id: user.id, email: user.email }, **tokens }
         else
-          render json: {error: "Invalid credentials"}, status: :unauthorized
+          render json: { error: "Invalid credentials" }, status: :unauthorized
         end
       end
 
@@ -28,7 +28,7 @@ module Api
         tokens = ::Auth::TokenService.new(user).generate_tokens
         render json: tokens
       rescue ::Auth::TokenService::InvalidToken, Auth::TokenService::ExpiredToken
-        render json: {error: "Invalid refresh token"}, status: :unauthorized
+        render json: { error: "Invalid refresh token" }, status: :unauthorized
       end
 
       def logout

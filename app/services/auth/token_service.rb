@@ -25,7 +25,7 @@ module Auth
           token,
           JwtConfig.secret_key,
           true,
-          {algorithm: JwtConfig.algorithm, exp: true}
+          { algorithm: JwtConfig.algorithm, exp: true }
         ).first
 
         user = User.find_by(id: payload["sub"])
