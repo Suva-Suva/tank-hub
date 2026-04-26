@@ -3,7 +3,7 @@ module Api
   module V1
     class AuthController < BaseController
       def register
-        user = User.new(user_params)
+        user = ::User.new(user_params)
         if user.save
           tokens = ::Auth::TokenService.new(user).generate_tokens
           render json: {user: {id: user.id, email: user.email}, **tokens}, status: :created
@@ -13,7 +13,7 @@ module Api
       end
 
       def login
-        user = User.find_by(email: params[:email]&.downcase)
+        user = ::User.find_by(email: params[:email]&.downcase)
 
         if user&.authenticate(params[:password])
           tokens = ::Auth::TokenService.new(user).generate_tokens
