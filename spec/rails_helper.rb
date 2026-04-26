@@ -9,7 +9,7 @@ require "rspec/rails"
 require "factory_bot_rails"
 require "shoulda/matchers"
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").each { |f| require f }
 
 # Shoulda Matchers config
 Shoulda::Matchers.configure do |config|

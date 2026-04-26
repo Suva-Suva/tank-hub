@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Articles (публичные)", type: :request do
       get api_v1_articles_path, as: :json
 
       expect(response).to have_http_status(:ok)
-      ids = response.parsed_body["data"].map { |a| a["id"] }
+      ids = response.parsed_body["data"].pluck("id")
       expect(ids).to include(published.id)
       expect(ids).not_to include(draft.id)
     end
@@ -21,7 +21,7 @@ RSpec.describe "Api::V1::Articles (публичные)", type: :request do
 
       get api_v1_articles_path, as: :json
 
-      ids = response.parsed_body["data"].map { |a| a["id"] }
+      ids = response.parsed_body["data"].pluck("id")
       expect(ids).not_to include(future.id)
     end
 
@@ -32,7 +32,7 @@ RSpec.describe "Api::V1::Articles (публичные)", type: :request do
 
       get api_v1_articles_path, params: {game_slug: game.slug}
 
-      ids = response.parsed_body["data"].map { |a| a["id"] }
+      ids = response.parsed_body["data"].pluck("id")
       expect(ids).to include(in_game.id)
       expect(ids).not_to include(in_other.id)
     end
@@ -51,7 +51,7 @@ RSpec.describe "Api::V1::Articles (публичные)", type: :request do
 
       get api_v1_articles_path, as: :json
 
-      ids = response.parsed_body["data"].map { |a| a["id"] }
+      ids = response.parsed_body["data"].pluck("id")
       expect(ids.index(new_article.id)).to be < ids.index(old_article.id)
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe "Api::V1::Articles (публичные)", type: :request do
       get related_api_v1_article_path(article.slug), as: :json
 
       expect(response).to have_http_status(:ok)
-      ids = response.parsed_body.map { |a| a["id"] }
+      ids = response.parsed_body.pluck("id")
       expect(ids).to include(related.id)
       expect(ids).not_to include(article.id)
       expect(ids).not_to include(other_game_article.id)

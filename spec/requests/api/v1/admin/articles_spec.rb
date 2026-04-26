@@ -22,7 +22,7 @@ RSpec.describe "Api::V1::Admin::Articles", type: :request do
         get api_v1_admin_articles_path, headers: auth_headers_for(member), as: :json
 
         expect(response).to have_http_status(:ok)
-        ids = response.parsed_body["data"].map { |a| a["id"] }
+        ids = response.parsed_body["data"].pluck("id")
         expect(ids).to include(own.id)
         expect(ids).not_to include(other.id)
       end
@@ -33,7 +33,7 @@ RSpec.describe "Api::V1::Admin::Articles", type: :request do
 
         get api_v1_admin_articles_path, params: {status: "draft"}, headers: auth_headers_for(member)
 
-        ids = response.parsed_body["data"].map { |a| a["id"] }
+        ids = response.parsed_body["data"].pluck("id")
         expect(ids).to include(draft.id)
         expect(ids).not_to include(published.id)
       end
@@ -46,7 +46,7 @@ RSpec.describe "Api::V1::Admin::Articles", type: :request do
 
         get api_v1_admin_articles_path, headers: auth_headers_for(moderator), as: :json
 
-        ids = response.parsed_body["data"].map { |a| a["id"] }
+        ids = response.parsed_body["data"].pluck("id")
         expect(ids).to include(own.id)
         expect(ids).not_to include(admin_article.id)
       end
@@ -59,7 +59,7 @@ RSpec.describe "Api::V1::Admin::Articles", type: :request do
 
         get api_v1_admin_articles_path, headers: auth_headers_for(admin), as: :json
 
-        ids = response.parsed_body["data"].map { |a| a["id"] }
+        ids = response.parsed_body["data"].pluck("id")
         expect(ids).to include(article1.id, article2.id)
       end
 
@@ -70,7 +70,7 @@ RSpec.describe "Api::V1::Admin::Articles", type: :request do
 
         get api_v1_admin_articles_path, params: {game_id: game.id}, headers: auth_headers_for(admin)
 
-        ids = response.parsed_body["data"].map { |a| a["id"] }
+        ids = response.parsed_body["data"].pluck("id")
         expect(ids).to include(in_game.id)
         expect(ids).not_to include(in_other.id)
       end
