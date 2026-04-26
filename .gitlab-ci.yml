@@ -16,6 +16,9 @@ variables:
   BUNDLE_RETRY: 3
   # Отключаем интерактивные подсказки bundler
   BUNDLE_FORCE_RUBY_PLATFORM: "1"
+  # JWT секрет для тестовой среды (не используется в продакшне)
+  JWT_SECRET_KEY: "ci_test_jwt_secret_key_not_for_production"
+  SECRET_KEY_BASE: "ci_test_secret_key_base_not_for_production_use_65_chars_minimum_length"
 
 # Кэширование: разделяем bundler и node_modules
 cache:
@@ -116,7 +119,7 @@ deploy:staging:
     name: staging
     url: https://api-staging.example.com
   script:
-    - echo "🚀 Deploy to staging (placeholder)"
+    - echo "Deploy to staging (placeholder)"
     - |
       if [ -n "$DEPLOY_SCRIPT" ]; then
         eval "$DEPLOY_SCRIPT"

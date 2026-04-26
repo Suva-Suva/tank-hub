@@ -9,6 +9,10 @@ FactoryBot.define do
     status { :draft }
     meta { {} }
 
+    trait :draft do
+      status { :draft }
+    end
+
     trait :published do
       status { :published }
       published_at { Time.current }

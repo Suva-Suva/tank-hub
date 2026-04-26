@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_11_202657) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_17_184302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -43,6 +43,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_202657) do
     t.index ["search_vector"], name: "index_articles_on_search_vector", using: :gin
     t.index ["status", "published_at"], name: "idx_articles_status_published"
     t.index ["title"], name: "idx_articles_title_trgm", opclass: :gin_trgm_ops, using: :gin
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["article_id"], name: "index_bookmarks_on_article_id"
+    t.index ["user_id", "article_id"], name: "index_bookmarks_on_user_id_and_article_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -121,6 +131,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_202657) do
   add_foreign_key "article_categories", "categories"
   add_foreign_key "articles", "games"
   add_foreign_key "articles", "users", column: "author_id"
+  add_foreign_key "bookmarks", "articles"
+  add_foreign_key "bookmarks", "users"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "ratings", "articles"
   add_foreign_key "ratings", "users"

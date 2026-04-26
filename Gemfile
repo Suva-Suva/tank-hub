@@ -67,8 +67,8 @@ gem "jwt", "~> 3.1"
 
 gem "bcrypt", "~> 3.1"
 
-gem "factory_bot_rails", "~> 6.5", groups: [:":development", :":test"]
+gem "factory_bot_rails", "~> 6.5", groups: [:development, :test]
 
-gem "rspec-rails", "~> 8.0", groups: [:":development", :":test"]
+gem "rspec-rails", "~> 8.0", groups: [:development, :test]
 
-gem "shoulda-matchers", "~> 7.0", group: :":test"
+gem "shoulda-matchers", "~> 7.0", group: :test
