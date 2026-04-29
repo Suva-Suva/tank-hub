@@ -1,6 +1,4 @@
 class Api::V1::CommentsController < ApplicationController
-  # 1. Добавляем этот метод, чтобы fetchComments() в React заработал
-  # skip_before_action :verify_authenticity_token
 
   def index
     # Загружаем все комментарии, самые свежие — сверху
@@ -11,7 +9,7 @@ class Api::V1::CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
-    @comment.user = User.first # Твоя временная заглушка
+    @comment.user = User.first
 
     if @comment.save
       render json: @comment, status: :created
