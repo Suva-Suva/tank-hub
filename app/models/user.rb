@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :rated_articles, through: :ratings, source: :article
+  has_many :comments
 
   validates :email,
     presence: true,

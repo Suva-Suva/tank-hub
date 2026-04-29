@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       post "/auth/login", to: "auth#login", as: :auth_login
       post "/auth/refresh", to: "auth#refresh", as: :auth_refresh
       delete "/auth/logout", to: "auth#logout", as: :auth_logout
+      resources :tank_tech_specs, only: [:index]
+      resources :comments, only: [:index]
 
       # Public Resources
       resources :games, only: %i[index show], param: :slug do
@@ -41,6 +43,10 @@ Rails.application.routes.draw do
         resource :profile, only: %i[show update], controller: "profile"
         resources :bookmarks, only: %i[index create destroy]
         resources :ratings, only: %i[create update destroy]
+      end
+
+      resources :posts do
+        resources :comments, only: [:create, :index]
       end
 
       # Admin (Role-based access)

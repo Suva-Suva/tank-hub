@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_17_184302) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_29_184115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -73,6 +73,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_17_184302) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "is_active", default: true, null: false
@@ -83,6 +93,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_17_184302) do
     t.index ["is_active", "title"], name: "idx_games_active_title"
     t.index ["slug"], name: "idx_games_slug_unique", unique: true
     t.index ["title"], name: "idx_games_title_unique", unique: true
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -134,6 +151,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_17_184302) do
   add_foreign_key "bookmarks", "articles"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "ratings", "articles"
   add_foreign_key "ratings", "users"
   add_foreign_key "tank_tech_specs", "games"
