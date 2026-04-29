@@ -1,5 +1,4 @@
 class Api::V1::CommentsController < ApplicationController
-
   def index
     # Загружаем все комментарии, самые свежие — сверху
     @comments = Comment.order(created_at: :desc).limit(10)
@@ -14,7 +13,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.save
       render json: @comment, status: :created
     else
-      render json: @comment.errors, status: :unprocessable_entity
+      render json: @comment.errors, status: :unprocessable_content
     end
   end
 
